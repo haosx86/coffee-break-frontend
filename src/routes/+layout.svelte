@@ -1,6 +1,10 @@
 <script>
   import "../app.postcss";
   import "../app.scss";
+
+  import Notifications from 'svelte-notifications';
 </script>
 
-<slot />
+<Notifications>
+  <slot />
+</Notifications>

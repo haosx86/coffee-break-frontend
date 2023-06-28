@@ -1,1 +1,11 @@
 /* Write your global styles here, in SCSS syntax. Variables and mixins from the src/variables.scss file are available here without importing */
+:root {
+  --grey-1: #ededed;
+  --darkwhite-1: #f6f6f6;
+  --text-color: #000;
+  --orange-1: #fa8c30;
+}
+
+body {
+  background-color: var(--darkwhite-1)
+}

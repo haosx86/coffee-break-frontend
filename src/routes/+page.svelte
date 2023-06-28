@@ -1,2 +1,65 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<div class="container">
+  {#each coffeeRecords as coffeeRecord}
+    <CoffeeCard {...coffeeRecord} />
+  {/each}
+
+  {#if isLoading}
+    <CoffeeCardSkeleton />
+  {:else}
+    <PlusButton on:click={ onPlusClick } />
+  {/if}
+</div>
+
+<script lang="ts">
+import { onMount } from "svelte";
+import CoffeeCard from "../components/CoffeeCard.svelte";
+import CoffeeCardSkeleton from "../components/CoffeeCardSkeleton.svelte";
+import PlusButton from "../components/PlusButton.svelte";
+import type { Coffee } from '../types/Coffee'
+import { loadFirstCoffee } from "../service/loadFirstCoffee";
+import { getNotificationsContext } from 'svelte-notifications';
+import { loadNextCoffee } from "../service/loadNextCoffee";
+import { scrollEnd } from "../utils/scrollEnd";
+
+const { addNotification } = getNotificationsContext();
+
+let coffeeRecords: Coffee[] = []
+let isLoading = true
+
+const showError = (message: string) => {
+  addNotification({
+    text: `Error loading coffee: ${message}`,
+    position: 'top-center'
+  })
+}
+
+const onPlusClick = async () => {
+  const lastCoffeeID = coffeeRecords[coffeeRecords.length - 1]._id
+
+  isLoading = true
+  try {
+    if (lastCoffeeID) {
+      coffeeRecords = [...coffeeRecords, await loadNextCoffee(lastCoffeeID)]
+    } else {
+      coffeeRecords = [await loadFirstCoffee()]
+    }
+    scrollEnd()
+  } catch (error) {
+    showError((error as Error).message)
+  } finally {
+    isLoading = false
+  }
+}
+
+onMount(async () => {
+  isLoading = true
+  try {
+    coffeeRecords = [await loadFirstCoffee()]
+    console.log(coffeeRecords)
+  } catch (error) {
+    showError((error as Error).message)
+  } finally {
+    isLoading = false
+  }
+})
+</script>
