@@ -54,6 +54,7 @@ const onPlusClick = async () => {
     showError((error as Error).message)
   } finally {
     isLoading = false
+    resetCardRequestInterval()
   }
 }
 
@@ -73,6 +74,8 @@ const onCoffeLike = async (event: CustomEvent<string>) => {
     })
   } catch (error) {
     showError((error as Error).message)
+  } finally {
+    resetCardRequestInterval()
   }
 }
 
@@ -87,8 +90,26 @@ onMount(async () => {
     showError((error as Error).message)
   } finally {
     isLoading = false
+    resetCardRequestInterval()
   }
 })
+
+let autoCardTimer: ReturnType<typeof setInterval> | null = null
+
+const CARD_AUTOREFRESH_INTERVAL = 30000
+
+const resetCardRequestInterval = () => {
+  if (autoCardTimer) {
+    clearInterval(autoCardTimer)
+  }
+
+  autoCardTimer = setInterval(() => {
+    if (isLoading) return
+
+    onPlusClick()
+  }, CARD_AUTOREFRESH_INTERVAL)
+}
+
 </script>
 
 <style lang="scss">
