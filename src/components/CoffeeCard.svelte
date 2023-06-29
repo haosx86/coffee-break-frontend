@@ -1,10 +1,10 @@
 <div class="card">
   {#if isLoading}
     <Skeleton widthRatio={ 32 } heightRatio= { 32 } />
-    <Skeleton widthRatio={ 32 } heightRatio={ 2 } />
-    <Skeleton widthRatio={ 32 } heightRatio={ 2 } />
-    <Skeleton widthRatio={ 32 } heightRatio={ 2 } />
-    <Skeleton widthRatio={ 32 } heightRatio={ 5 } />
+    <Skeleton widthRatio={ 32 } heightRatio={ 2.5 } />
+    <Skeleton widthRatio={ 32 } heightRatio={ 2.5 } />
+    <Skeleton widthRatio={ 32 } heightRatio={ 2.5 } />
+    <Skeleton widthRatio={ 32 } heightRatio={ 6 } />
   {:else}
     <div class="card__image-container">
       <div class="card__intensifier">{ intensifier }</div>
@@ -15,13 +15,17 @@
     <h3 class="card__variety">{ variety }</h3>
 
     <TagsList tags={ notes } />
+
+    <LikeButton likes={ likes } on:like={ onCoffeeLike } />
   {/if}
 </div>
 
 <script lang="ts">
+import { createEventDispatcher } from 'svelte';
 import TagsList from "./TagsList.svelte";
 import CoffeeImage from './CoffeeImage.svelte'
 import Skeleton from "./Skeleton.svelte";
+import LikeButton from "./LikeButton.svelte";
 
 export let origin = ''
 export let blendName = ''
@@ -30,6 +34,14 @@ export let intensifier = ''
 export let imageURL = ''
 export let notes: string[] = []
 export let isLoading = false
+export let likes = 0
+export let _id = ''
+
+const dispatch = createEventDispatcher<{ like: string }>();
+
+const onCoffeeLike = () => {
+  dispatch('like', _id)
+}
 </script>
 
 <style lang="scss">

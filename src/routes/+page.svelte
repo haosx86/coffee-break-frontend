@@ -1,6 +1,6 @@
 <div class="container">
   {#each coffeeRecords as coffeeRecord}
-    <CoffeeCard {...coffeeRecord} />
+    <CoffeeCard {...coffeeRecord} on:like={ onCoffeLike } />
   {/each}
 
   {#if isLoading}
@@ -19,6 +19,7 @@ import { loadFirstCoffee } from "../service/loadFirstCoffee";
 import { getNotificationsContext } from 'svelte-notifications';
 import { loadNextCoffee } from "../service/loadNextCoffee";
 import { scrollEnd } from "../utils/scrollEnd";
+  import { likeCoffee } from "../service/likeCoffee";
 
 const { addNotification } = getNotificationsContext();
 
@@ -55,6 +56,27 @@ const onPlusClick = async () => {
   }
 }
 
+const onCoffeLike = async (event: CustomEvent<string>) => {
+  const id = event.detail
+
+  try {
+    const updatedCoffeeRecord = await likeCoffee(id)
+
+    if (!updatedCoffeeRecord) throw Error('Cannot like this coffee')
+
+    coffeeRecords = coffeeRecords.map((coffeeRecord) => {
+      if (coffeeRecord._id === id) {
+        return updatedCoffeeRecord
+      }
+      return coffeeRecord
+    })
+  } catch (error) {
+    showError((error as Error).message)
+  } finally {
+    // isLoading = false
+  }
+}
+
 onMount(async () => {
   isLoading = true
 
@@ -62,7 +84,6 @@ onMount(async () => {
 
   try {
     coffeeRecords = [await loadFirstCoffee()]
-    console.log(coffeeRecords)
   } catch (error) {
     showError((error as Error).message)
   } finally {

@@ -1,5 +1,5 @@
 <ul class="tags-list">
-  {#each tagsWithColorsDoubled as tag}
+  {#each tagsWithColors as tag}
     <li
       class="tags-list__tag"
       style="
@@ -32,20 +32,12 @@ const tagsColors = [
 ]
 
 let tagsWithColors: TagDescription[] = []
-let tagsWithColorsDoubled: TagDescription[] = []
 
 $: {
   tagsWithColors = tags.map((label) => ({
     label,
     color: tagsColors[strHash(label) % tagsColors.length]
   }))
-}
-
-$: {
-  tagsWithColorsDoubled = [
-    ...tagsWithColors,
-    ...tagsWithColors
-  ].sort(() => Math.random() - 0.5)
 }
 </script>
 
