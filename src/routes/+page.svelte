@@ -1,4 +1,5 @@
 <div class="container">
+  <h1 class="app-name">Coffee Break App</h1>
   {#each coffeeRecords as coffeeRecord}
     <CoffeeCard {...coffeeRecord} on:like={ onCoffeLike } />
   {/each}
@@ -19,7 +20,7 @@ import { loadFirstCoffee } from "../service/loadFirstCoffee";
 import { getNotificationsContext } from 'svelte-notifications';
 import { loadNextCoffee } from "../service/loadNextCoffee";
 import { scrollEnd } from "../utils/scrollEnd";
-  import { likeCoffee } from "../service/likeCoffee";
+import { likeCoffee } from "../service/likeCoffee";
 
 const { addNotification } = getNotificationsContext();
 
@@ -72,8 +73,6 @@ const onCoffeLike = async (event: CustomEvent<string>) => {
     })
   } catch (error) {
     showError((error as Error).message)
-  } finally {
-    // isLoading = false
   }
 }
 
@@ -97,5 +96,9 @@ onMount(async () => {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.app-name {
+  color: var(--grey-1);
 }
 </style>
