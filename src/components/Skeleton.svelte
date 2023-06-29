@@ -19,6 +19,8 @@ export let heightRatio = 4;
   background-size: 300% 300%;
   animation: 3s shine linear infinite;
   margin: var(--base-size-step) 0;
+
+  max-width: calc(100% - var(--base-size-step));
 }
 
 @keyframes shine {
