@@ -47,7 +47,10 @@ $: {
   display: flex;
   flex-direction: row;
   width: 100%;
+  max-width: calc(100% - $baseSizeStep / 2);
   user-select: none;
+  margin: 0 auto;
+  padding: 0;
 
   display: flex;
   flex-direction: row;
