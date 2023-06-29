@@ -10,11 +10,11 @@ const dispatch = createEventDispatcher();
 $buttonSize: 96px;
 
 .plus-button {
-  font-size: $buttonSize / 2;
+  font-size: calc($buttonSize / 2);
   font-weight: 500;
   width: $buttonSize;
   height: $buttonSize;
-  border-radius: $buttonSize / 2;
+  border-radius: calc($buttonSize / 2);
   background-color: var(--orange-1);
   display: flex;
   align-items: center;

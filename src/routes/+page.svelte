@@ -4,7 +4,7 @@
   {/each}
 
   {#if isLoading}
-    <CoffeeCardSkeleton />
+    <CoffeeCard isLoading={ true } />
   {:else}
     <PlusButton on:click={ onPlusClick } />
   {/if}
@@ -13,7 +13,6 @@
 <script lang="ts">
 import { onMount } from "svelte";
 import CoffeeCard from "../components/CoffeeCard.svelte";
-import CoffeeCardSkeleton from "../components/CoffeeCardSkeleton.svelte";
 import PlusButton from "../components/PlusButton.svelte";
 import type { Coffee } from '../types/Coffee'
 import { loadFirstCoffee } from "../service/loadFirstCoffee";
@@ -37,13 +36,18 @@ const onPlusClick = async () => {
   const lastCoffeeID = coffeeRecords[coffeeRecords.length - 1]._id
 
   isLoading = true
+
+  requestAnimationFrame(() => scrollEnd())
+
+  // Dummy delay to enjoy Card skeleton
+  await new Promise((resolve) => setTimeout(resolve, 1500))
+
   try {
     if (lastCoffeeID) {
       coffeeRecords = [...coffeeRecords, await loadNextCoffee(lastCoffeeID)]
     } else {
       coffeeRecords = [await loadFirstCoffee()]
     }
-    scrollEnd()
   } catch (error) {
     showError((error as Error).message)
   } finally {
@@ -53,6 +57,9 @@ const onPlusClick = async () => {
 
 onMount(async () => {
   isLoading = true
+
+  requestAnimationFrame(() => scrollEnd())
+
   try {
     coffeeRecords = [await loadFirstCoffee()]
     console.log(coffeeRecords)
@@ -63,3 +70,11 @@ onMount(async () => {
   }
 })
 </script>
+
+<style lang="scss">
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+</style>

@@ -1,11 +1,19 @@
-/* Write your global styles here, in SCSS syntax. Variables and mixins from the src/variables.scss file are available here without importing */
+/* It is better to have colors in custom properties.
+ * Dynamic(runtime) theme selection easier to implement
+ */
 :root {
   --grey-1: #ededed;
-  --darkwhite-1: #f6f6f6;
-  --text-color: #000;
-  --orange-1: #fa8c30;
+  --darkblue-1: #09002e;
+  --darkwhite-1: #efefef;
+  --text-color-primary: #000;
+  --text-color-secondary: #444;
+  --orange-1: #af4f00;
+  --label-bg-1: rgb(9, 0, 46, 0.4);
+  --base-size-step: 16px;
 }
 
 body {
-  background-color: var(--darkwhite-1)
+  background-color: var(--darkblue-1);
+  font-family: Montserrat, serif;
+  color: var(--text-color-primary);
 }

@@ -1,9 +1,9 @@
 {#if isLoaded}
-	<img {src} width={ size } height="auto" alt={ alt } />
+  <img {src} class="coffee-image" alt={ alt } />
 {:else if isError}
-	<img width={ size } height="auto" src={ ImgNotFound } alt="Coffee Not Found" />
+  <img class="coffee-image" src={ ImgNotFound } alt="Coffee Not Found" />
 {:else if isLoading}
-	<img src={ ImgLoading } width={ size } height="auto" alt="Loading" />
+  <img src={ ImgLoading } class="coffee-image" alt="Loading" />
 {/if}
 
 <script lang="ts">
@@ -12,7 +12,6 @@
   import ImgLoading from '../assets/coffee-loading.gif'
 	export let src = '';
   export let alt = ''
-  export let size = 500
 
 	let isLoaded = false;
 	let isError = false;
@@ -23,7 +22,10 @@
 			img.src = src;
 			isLoading = true;
 
-			img.onload = () => {
+			img.onload = async () => {
+        // Images are usually loaded too fast
+        // Adding dummy delay to enjoy loader gif
+        await new Promise((resolve) => setTimeout(resolve, 2000))
         isLoading = false;
         isLoaded = true;
 			};
@@ -33,3 +35,13 @@
 			};
 	})
 </script>
+
+<style lang="scss">
+.coffee-image {
+  width: $cardBaseSize;
+  height: $cardBaseSize;
+
+  max-width: calc(100vw - $baseSizeStep*4);
+  max-height: calc(100vw - $baseSizeStep*4);
+}
+</style>

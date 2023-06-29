@@ -1,5 +1,5 @@
 <ul class="tags-list">
-  {#each tagsWithColors as tag}
+  {#each tagsWithColorsDoubled as tag}
     <li
       class="tags-list__tag"
       style="
@@ -25,12 +25,14 @@ const tagsColors = [
   'ffcce5',
   'e0e0e0',
   'ffcccc',
+  'e5a0ff',
   '66cc00',
   'ffff99',
   'ccccff',
 ]
 
 let tagsWithColors: TagDescription[] = []
+let tagsWithColorsDoubled: TagDescription[] = []
 
 $: {
   tagsWithColors = tags.map((label) => ({
@@ -38,16 +40,36 @@ $: {
     color: tagsColors[strHash(label) % tagsColors.length]
   }))
 }
+
+$: {
+  tagsWithColorsDoubled = [
+    ...tagsWithColors,
+    ...tagsWithColors
+  ].sort(() => Math.random() - 0.5)
+}
 </script>
 
 <style lang="scss">
-  .tags-list {
-    list-style-type: none;
-    display: flex;
-    flex-direction: row;
+.tags-list {
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  user-select: none;
 
-    // white-space: nowrap;
-    overflow-x: scroll;
-    -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  &__tag {
+    font-weight: 300;
+    font-size: 1rem;
+    padding: calc($baseSizeStep / 2);
+    border-radius: calc($baseSizeStep / 2);
+    margin: calc($baseSizeStep / 2);
+    cursor: pointer;
   }
+}
 </style>

@@ -3,7 +3,7 @@ export type Coffee = {
   blendName: string;
   origin: string;
   variety: string;
-  notes: string;
+  notes: string[];
   intensifier: string;
   imageURL: string;
   likes: number;

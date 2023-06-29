@@ -1,27 +1,29 @@
 <div
   class="skeleton"
   style="
-    width: {width}px;
-    height: {height}px;
+    width: calc(var(--base-size-step) * { widthRatio });
+    height: calc(var(--base-size-step) * { heightRatio });
   "
 ></div>
 
 <script lang="ts">
-export let width = 72;
-export let height = 72;
+export let widthRatio = 4;
+export let heightRatio = 4;
 </script>
 
 <style lang="scss">
 .skeleton {
-  background-color: var(--loading-grey);
-  background: linear-gradient(
-    100deg,
-    rgba(255, 255, 255, 0) 40%,
-    rgba(255, 255, 255, .5) 50%,
-    rgba(255, 255, 255, 0) 60%
-  ) var(--loading-grey);
-  background-size: 200% 100%;
-  background-position-x: 180%;
-  animation: 1s loading ease-in-out infinite;
+  background: #bbb;
+  background: linear-gradient(110deg, #bcbcbc 8%, #f5f5f5 18%, #bcbcbc 33%);
+  border-radius: 5px;
+  background-size: 300% 300%;
+  animation: 3s shine linear infinite;
+  margin: var(--base-size-step) 0;
+}
+
+@keyframes shine {
+  to {
+    background-position-x: -300%;
+  }
 }
 </style>
